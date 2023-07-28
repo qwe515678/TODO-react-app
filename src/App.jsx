@@ -1,22 +1,56 @@
 import './styles/input.css'
-import {TodoList, Todo}  from './todolist'
 import { useState } from 'react';
 
+
+
+function TodoList({ todos }){
+  const [keyList, setKeyList] = useState([])
+  let todoList=todos.map((todo) => {
+    return (
+      <Todo 
+        key={todo.note} 
+        todo={todo}
+      />
+    );
+
+  })
+  return(
+    <ul>{todoList}</ul>
+  )
+}
+function Todo({todo}) {
+  const [isChecked, setIsChecked] = useState(todo.isChecked);
+
+  const handleChange = () => {
+    setIsChecked(!isChecked);
+    todo.isChecked = !isChecked;
+  };
+
+  return (
+    <li>
+      <label>{todo.note}</label>
+      <input 
+        type="checkbox"
+        checked={isChecked}
+        onChange={handleChange} 
+      />
+    </li>
+  );
+}
 function Navigation({todos, setTodos}){
 
   let [text, setText] = useState('')
-
   const handleTextChange = (e) => {
     setText(e.target.value)
   }
-
-  const handleAddTodo = () => {
-    const newTodos = [...todos];
-    newTodos.unshift({
+  const handleAddTodo = (e) => {
+    e.preventDefault();
+    const newTodo = {
       note: text,
-      isChecked: false,
-    });
-    setTodos(newTodos);
+      isChecked: false
+    };
+  
+    setTodos([newTodo,...todos]);
     setText('');
   }
 
@@ -33,14 +67,28 @@ function Navigation({todos, setTodos}){
 
 }
 
-function AdditionalTools(){
+function AdditionalTools({todos, setTodos}){
+
+  const handleDeleteChecked = () => {
+
+    let newTodos = todos.filter(todo => !todo.isChecked);
+    
+    // Reset checkboxes
+    newTodos = newTodos.map(todo => {  
+      return {
+        ...todo,
+        isChecked: false
+      }
+    });
+    setTodos(newTodos)
+    console.log("🚀 ~ file: App.jsx:70 ~ handleDeleteChecked ~ newTodos:", newTodos)
+  }
 
   return (
-    <button>Delete all checked</button>
-  )
+    <button onClick={handleDeleteChecked}>Delete all checked</button>
+  );
 
 }
-
 
 export default function App() {
 
@@ -48,9 +96,9 @@ export default function App() {
     {note:"do my homework", isChecked:false},
     {note:"write an essay", isChecked:false},
     {note:"plant a tree", isChecked:false},
-    {note:"grow a son", isChecked:true},
+    {note:"grow a son", isChecked:false},
     {note:"build a house", isChecked:false},
-    {note:"lorem ipsum", isChecked:true},
+    {note:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere, maxime? Animi recusandae eligendi vitae, tempore dolorum asperiores quia labore. Est vero vitae debitis itaque quos reprehenderit modi distinctio aliquam aperiam!", isChecked:false},
   ])
 
   return (
@@ -58,21 +106,9 @@ export default function App() {
 
       <Navigation todos={todos} setTodos={setTodos} />
 
-      <TodoList 
-  todoList={todos.map((todo, index) => {
+      <TodoList todos={todos}/>
 
-    const numberInArray = index + 1;
-
-    return (
-      <Todo 
-        key={numberInArray} 
-        todo={todo}
-      />
-    );
-
-  })}/>
-
-      <AdditionalTools />
+      <AdditionalTools todos={todos} setTodos={setTodos}/>
 
     </div>
   )
