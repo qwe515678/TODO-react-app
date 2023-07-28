@@ -1,52 +1,80 @@
 import './styles/input.css'
+import {TodoList, Todo}  from './todolist'
+import { useState } from 'react';
 
+function Navigation({todos, setTodos}){
 
-function Navigation(){
+  let [text, setText] = useState('')
 
-  return(
-    <>
-      <input type="text" />
-      <button>add</button>
-    </>
+  const handleTextChange = (e) => {
+    setText(e.target.value)
+  }
+
+  const handleAddTodo = () => {
+    const newTodos = [...todos];
+    newTodos.unshift({
+      note: text,
+      isChecked: false,
+    });
+    setTodos(newTodos);
+    setText('');
+  }
+
+  return (
+    <form onSubmit={handleAddTodo}>
+      <input 
+        type="text"
+        value={text}
+        onChange={handleTextChange} 
+      />
+      <button type="submit">Add Todo</button>
+    </form>
   )
-}
 
-function TodoList({ todoList }){
-  let todoListjsx = todoList.map((todo) => (
-    <li className="" key={todo.id}>
-      <div className="note">{todo.note}</div>
-      <input type="checkbox" />
-    </li>
-  ))
-  
-  return(
-    <ul>{todoListjsx}</ul>
-  )
 }
 
 function AdditionalTools(){
-  return(
-    <>
-    <button>delete all checked</button>
-    </>
-    )
+
+  return (
+    <button>Delete all checked</button>
+  )
+
 }
 
-let todoList = [
-  {note:"do my homework", isChecked:false, id:1},
-  {note:"write an essay", isChecked:false, id:2},
-  {note:"plant a tree", isChecked:false, id:3},
-  {note:"grow a son", isChecked:false, id:4},
-  {note:"build a house", isChecked:false, id:5},
-  {note:"lorem ipsum", isChecked:false, id:6},
-]
 
 export default function App() {
+
+  const [todos, setTodos] = useState([
+    {note:"do my homework", isChecked:false},
+    {note:"write an essay", isChecked:false},
+    {note:"plant a tree", isChecked:false},
+    {note:"grow a son", isChecked:true},
+    {note:"build a house", isChecked:false},
+    {note:"lorem ipsum", isChecked:true},
+  ])
+
   return (
-    <div className="todo">
-      <Navigation />
-      <TodoList todoList={todoList}/> 
+    <div className="todo-app">
+
+      <Navigation todos={todos} setTodos={setTodos} />
+
+      <TodoList 
+  todoList={todos.map((todo, index) => {
+
+    const numberInArray = index + 1;
+
+    return (
+      <Todo 
+        key={numberInArray} 
+        todo={todo}
+      />
+    );
+
+  })}/>
+
       <AdditionalTools />
+
     </div>
-  );
+  )
+
 }
