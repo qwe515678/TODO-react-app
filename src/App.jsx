@@ -1,13 +1,12 @@
 import './styles/input.css'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 
 
 function TodoList({ todos }){
-  const [keyList, setKeyList] = useState([])
   let todoList=todos.map((todo) => {
     return (
-      <Todo 
+      <Todo
         key={todo.note} 
         todo={todo}
       />
@@ -15,26 +14,36 @@ function TodoList({ todos }){
 
   })
   return(
-    <ul>{todoList}</ul>
+    <ul className='todo-list'>{todoList}</ul>
   )
 }
 function Todo({todo}) {
-  const [isChecked, setIsChecked] = useState(todo.isChecked);
-
-  const handleChange = () => {
-    setIsChecked(!isChecked);
-    todo.isChecked = !isChecked;
-  };
-
+  const onChangeCheckBox = function(){
+    todo.isChecked = !todo.isChecked
+  }
   return (
-    <li>
-      <label>{todo.note}</label>
-      <input 
+    <div className="custom-checkbox todo">
+      <input
         type="checkbox"
-        checked={isChecked}
-        onChange={handleChange} 
+        onChange={onChangeCheckBox}
+        defaultValue={todo.isChecked}
       />
-    </li>
+      <div className="svg-wrapper">
+      <svg viewBox="0 0 60 40" aria-hidden="true" focusable="false"className='checkbox-svg'>
+      <path
+      d="M21,2 C13.4580219,4.16027394 1.62349378,18.3117469 3,19 C9.03653312,22.0182666 25.2482171,10.3758914 30,8 C32.9363621,6.53181896 41.321398,1.67860195 39,4 C36.1186011,6.8813989 3.11316157,27.1131616 5,29 C10.3223659,34.3223659 30.6434647,19.7426141 35,18 C41.2281047,15.5087581 46.3445303,13.6554697 46,14 C42.8258073,17.1741927 36.9154967,19.650702 33,22 C30.3136243,23.6118254 17,31.162498 17,34 C17,40.4724865 54,12.4064021 54,17 C54,23.7416728 34,27.2286213 34,37"
+      strokeWidth={4}
+      fill="none"
+      strokeDasharray={270}
+      strokeDashoffset={270}
+      />
+    </svg>
+    </div>
+      <p className='todo-note'>{todo.note}</p>
+    </div>
+  
+
+
   );
 }
 function Navigation({todos, setTodos}){
@@ -55,13 +64,16 @@ function Navigation({todos, setTodos}){
   }
 
   return (
-    <form onSubmit={handleAddTodo}>
+    <form className='nav-form' onSubmit={handleAddTodo}>
       <input 
         type="text"
         value={text}
         onChange={handleTextChange} 
+        className='nav-input'
+        placeholder=' Your TODO'
+        autoFocus
       />
-      <button type="submit">Add Todo</button>
+      <button type="submit" className='nav-btn'>Add Todo</button>
     </form>
   )
 
@@ -81,11 +93,10 @@ function AdditionalTools({todos, setTodos}){
       }
     });
     setTodos(newTodos)
-    console.log("🚀 ~ file: App.jsx:70 ~ handleDeleteChecked ~ newTodos:", newTodos)
   }
 
   return (
-    <button onClick={handleDeleteChecked}>Delete all checked</button>
+    <button onClick={handleDeleteChecked} className='aditional-btn'>Delete all checked</button>
   );
 
 }
@@ -93,22 +104,37 @@ function AdditionalTools({todos, setTodos}){
 export default function App() {
 
   const [todos, setTodos] = useState([
-    {note:"do my homework", isChecked:false},
-    {note:"write an essay", isChecked:false},
-    {note:"plant a tree", isChecked:false},
-    {note:"grow a son", isChecked:false},
-    {note:"build a house", isChecked:false},
-    {note:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere, maxime? Animi recusandae eligendi vitae, tempore dolorum asperiores quia labore. Est vero vitae debitis itaque quos reprehenderit modi distinctio aliquam aperiam!", isChecked:false},
-  ])
+    ])
+    useEffect(() => {
+
+      const storedTodos = JSON.parse(localStorage.getItem('todos'));
+    
+      if (storedTodos) {
+    
+        const seen = new Set();
+        const filtered = storedTodos.filter(todo => {
+          const duplicate = seen.has(todo.note);
+          seen.add(todo.note);
+          return !duplicate;
+        });
+    
+        setTodos(prev => [...prev, ...filtered]);
+      
+      }
+    
+    }, []);
+    useEffect(() => {
+      localStorage.setItem('todos', JSON.stringify(todos));
+    }, [todos]);
 
   return (
     <div className="todo-app">
 
-      <Navigation todos={todos} setTodos={setTodos} />
+      <Navigation className='navigation' todos={todos} setTodos={setTodos} />
 
-      <TodoList todos={todos}/>
+      <TodoList  todos={todos}/>
 
-      <AdditionalTools todos={todos} setTodos={setTodos}/>
+      <AdditionalTools className='aditional-tools' todos={todos} setTodos={setTodos}/>
 
     </div>
   )
