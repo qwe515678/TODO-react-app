@@ -1,3 +1,144 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+.custom-checkbox {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  color: #eee;
+  font-family: arial;
+}
+
+.custom-checkbox .svg-wrapper svg { 
+  display: inline-block;
+  vertical-align: middle;
+  margin-bottom: .2em;
+  width: 1em;
+  height: 1em;
+  border: 2px solid currentColor;
+}
+
+
+.custom-checkbox input[type="checkbox"] {
+  opacity: 0;
+  width: 1em;
+  height: 1em;
+  position: absolute;
+  left: .5em;
+  top: .4em;
+  cursor: pointer;
+}
+
+.custom-checkbox .svg-wrapper svg path {
+  transition: stroke-dashoffset .4s linear;
+}
+
+
+.custom-checkbox input[type="checkbox"]:checked + .svg-wrapper svg path {
+  stroke-dashoffset: 0;
+  stroke: currentColor;
+}
+
+.custom-checkbox input[type="checkbox"] + .svg-wrapper svg path {
+  stroke: #000000;
+}
+
+.custom-checkbox input[type="checkbox"]:checked + label {
+  text-decoration: line-through;
+}
+
+.custom-checkbox input[type="checkbox"]:focus + .svg-wrapper svg {
+  outline: 4px solid rgb(0, 17, 255);
+  outline-offset: 4px;
+}
+
+
+.custom-checkbox input[type="checkbox"]:focus:not(:focus-visible) + .svg-wrapper svg {
+  outline: none;
+}
+/*general styles */
+*{
+    box-sizing:border-box;
+    font-family: Helvetica, sans-serif;
+    font-size: 25px;
+    color: black;
+}
+p{
+  font-family: 'Roboto', sans-serif;
+  word-break: break-all;
+  padding-right: 10px;
+}
+.todo-app{
+    width: 86vw;
+    margin-right: auto;
+    margin-left: auto;
+}
+body{
+  background: #E3E3E3;
+  font-family: 'Roboto-reg', sans-serif;
+}
+/* navigation */
+.nav-form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 27px 0;
+}
+.nav-input, .nav-btn{
+    height: 42px;
+    background: #886161;
+    border-radius: 4px;
+    color: white;
+    word-break: break-all;
+}
+.nav-btn{
+    width: 18%;
+}
+.nav-input{
+    margin-right: 3%;
+    width: 79%;
+    padding-left: 10px;
+}
+
+/* todo-list */
+.todo-list{
+  overflow:scroll;
+  overflow-x:hidden;
+  max-height: 700px;
+  padding-right: 10px;
+}
+.todo{
+  background: #D9C5C5;
+  display: flex;
+  border-radius: 4px;
+
+}
+.todo:not(:last-child){
+  margin-bottom: 8px;
+}
+
+.todo-note{
+  color: #444141;
+  cursor: default;
+  align-self: center;
+  overflow-wrap: wrap ;
+
+ 
+} 
+.checkbox-svg{
+  margin-right: 16px;
+  margin-left: 6px;
+  margin-top: 6px;
+}
+/* aditional-tools */
+.aditional-btn{
+  margin-top: 47px;
+  background: #AD3B3B;
+
+  border-radius: 5px;
+  color: white;
+  padding: 8px 25px;
+}
