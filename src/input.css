@@ -1,15 +1,8 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-
-
 .custom-checkbox {
   display: block;
   position: relative;
   cursor: pointer;
   color: #eee;
-  font-family: arial;
 }
 
 .custom-checkbox .svg-wrapper svg { 
@@ -19,6 +12,7 @@
   width: 1em;
   height: 1em;
   border: 2px solid currentColor;
+  border-radius: 4px;
 }
 
 
@@ -35,13 +29,11 @@
 .custom-checkbox .svg-wrapper svg path {
   transition: stroke-dashoffset .4s linear;
 }
-
-
+.checkbox-checked,
 .custom-checkbox input[type="checkbox"]:checked + .svg-wrapper svg path {
   stroke-dashoffset: 0;
   stroke: currentColor;
 }
-
 .custom-checkbox input[type="checkbox"] + .svg-wrapper svg path {
   stroke: #000000;
 }
@@ -59,12 +51,37 @@
 .custom-checkbox input[type="checkbox"]:focus:not(:focus-visible) + .svg-wrapper svg {
   outline: none;
 }
+/* showing error */
+.error {
+  animation: shake 0.5s; 
+  border: 2px solid red;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
 /*general styles */
+.text-red::placeholder{
+  color: red;
+}
+.text-red{
+  outline: #AD3B3B 4px solid;
+}
+button,
+input,
+li{
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
 *{
     box-sizing:border-box;
     font-family: Helvetica, sans-serif;
     font-size: 25px;
     color: black;
+    border: none;
 }
 p{
   font-family: 'Roboto', sans-serif;
@@ -88,33 +105,39 @@ body{
     margin: 27px 0;
 }
 .nav-input, .nav-btn{
-    height: 42px;
     background: #886161;
     border-radius: 4px;
     color: white;
     word-break: break-all;
+    border: none;
 }
 .nav-btn{
+    height: 42px;
     width: 18%;
 }
 .nav-input{
-    margin-right: 3%;
-    width: 79%;
-    padding-left: 10px;
+  min-height: 42px;
+  max-height: 100px;
+  margin-right: 3%;
+  width: 79%;
+  padding: 0 10px;
+}
+.nav-input::placeholder{
+  color: #D9C5C5;
 }
 
 /* todo-list */
 .todo-list{
   overflow:scroll;
   overflow-x:hidden;
-  max-height: 700px;
-  padding-right: 10px;
+  max-height: 72vmin;
+
+  padding-left: 0;
 }
 .todo{
   background: #D9C5C5;
   display: flex;
   border-radius: 4px;
-
 }
 .todo:not(:last-child){
   margin-bottom: 8px;
@@ -125,20 +148,78 @@ body{
   cursor: default;
   align-self: center;
   overflow-wrap: wrap ;
-
- 
 } 
+.strikethrough {
+  text-decoration: line-through;
+}
 .checkbox-svg{
   margin-right: 16px;
   margin-left: 6px;
   margin-top: 6px;
 }
 /* aditional-tools */
+.additional-tools{
+  display: flex;
+  flex-wrap: nowrap;
+}
 .aditional-btn{
   margin-top: 47px;
-  background: #AD3B3B;
-
   border-radius: 5px;
-  color: white;
   padding: 8px 25px;
+}
+.delete-btn{
+  color: white;
+  background: #AD3B3B;
+  margin-right: auto;
+}
+.check-btn{
+  background: white;
+  width: 200px;
+}
+.check-btn-red{
+  color: #AD3B3B;
+  outline: #AD3B3B 2px solid;
+}
+.check-btn-green{
+  color: #4a703f;
+  outline: #4a703f 2px solid;
+}
+@media screen and (max-width: 782px){
+  .nav-form{
+    position: relative;
+  }
+  .nav-input{
+    margin: 0;
+    width: 100%;
+    padding-right: 45px;
+    
+  }
+  .nav-btn{
+    position: absolute;
+    top: 7px;
+    right: 10px;
+    background-image: url('add.svg');
+    width: 30px;
+    height: 30px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-size: 0;
+    
+    
+  }
+
+}
+@media screen and (max-width: 559px){
+  .additional-tools{
+    flex-direction: column;
+  }
+  .aditional-btn{
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 1.5em;
+  }
+  .delete-btn{
+    margin-bottom: 18px;
+  }
 }
