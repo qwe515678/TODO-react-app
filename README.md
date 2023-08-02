@@ -49,7 +49,7 @@ The app supports light and dark themes which are persisted in localStorage.
 
 The standard Create React App scripts are available:
 
-### `npm start`
+## Technologies  
 
 Runs the app in development mode.
 
@@ -57,6 +57,7 @@ Runs the app in development mode.
 
 Launches the test runner.
 
-### `npm run build`
+- `todos` - Array of todo objects with `note` and `isChecked` properties
+- `text` - Input value for new todo text
 
 Builds the app for production to the `build` folder.
